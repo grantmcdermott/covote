@@ -67,14 +67,6 @@ us[ , ':=' (daily_cases = cases - shift(cases, 1, 'lag'),
   .[, ':=' (daily_cases_perc = daily_cases/sum(daily_cases),
             daily_deaths_perc = daily_deaths/sum(daily_deaths)),
     by = .(geo, date)]
-#> Warning in shift(cases, 1, "lag"): NAs introduced by coercion
-#> Warning in shift(deaths, 1, "lag"): NAs introduced by coercion
-#> Warning in shift(cases, 1, "lag"): NAs introduced by coercion
-#> Warning in shift(deaths, 1, "lag"): NAs introduced by coercion
-#> Warning in shift(cases, 1, "lag"): NAs introduced by coercion
-#> Warning in shift(deaths, 1, "lag"): NAs introduced by coercion
-#> Warning in shift(cases, 1, "lag"): NAs introduced by coercion
-#> Warning in shift(deaths, 1, "lag"): NAs introduced by coercion
 
 ## Some labeling sugar to match the WaPo graphic
 us$geo = factor(us$geo, levels = c('state', 'county'), labels = c('States', 'Counties'))

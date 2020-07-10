@@ -23,7 +23,7 @@ The *Washington Post* published an article by Philip Bump on June 17, titled ["C
 
 The short script below provides R code for reproducing this figure with up-to-date data. The script was run on **`r Sys.Date()`**, but it will automatically pull in the most recent data whenever you run it.
 
-```{r covote}
+```{r covote, warning=FALSE}
 library(data.table)
 library(ggplot2)
 library(hrbrthemes)
