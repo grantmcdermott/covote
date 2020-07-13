@@ -7,15 +7,15 @@
 
 <!-- badges: end -->
 
-The *Washington Post* published an article by Philip Bump on June 17,
-titled [“Coronavirus has come to Trump
+The *Washington Post* published an article on June 17, 2020, titled
+[“Coronavirus has come to Trump
 country”](https://www.washingtonpost.com/politics/2020/06/17/coronavirus-has-come-trump-country/).
 The article included a striking figure showing daily COVID-19 cases over
 time, aggregated by 2016 election results (i.e. whether a county or
 state voted for Donald Trump or Hillary Clinton).
 
 The short script below provides R code for reproducing this figure with
-up-to-date data. The script was run on **2020-07-10**, but it will
+up-to-date data. The script was run on **2020-07-13**, but it will
 automatically pull in the most recent data whenever you run it.
 
 ``` r
@@ -106,6 +106,60 @@ ggplot(us[date>'2020-03-01'], aes(date, daily_deaths_perc, col = result)) +
 ```
 
 ![](README_files/figure-gfm/covote-2.png)<!-- -->
+
+### Bonus: County by state results
+
+Here’s a variation that wasn’t in the original WaPo article, but might
+be of interested.
+
+``` r
+## New county by state data table
+uscs =
+  nytc[us2016_counties[us2016_states, on='state_abbr'], on = 'fips', allow.cartesian = TRUE] %>%
+    .[!is.na(date),
+      lapply(.SD, sum, na.rm = TRUE), .SDcols = c('cases', 'deaths'),
+      by = .(date, result_state, result_county)]
+
+## Get daily counts and percentages
+setorder(uscs, result_state, result_county, date)
+uscs[ , ':=' (daily_cases = cases - shift(cases, 1, 'lag'),
+              daily_deaths = deaths - shift(deaths, 1, 'lag')),
+      by = .(result_state, result_county)] %>%
+  .[, ':=' (daily_cases_perc = daily_cases/sum(daily_cases),
+            daily_deaths_perc = daily_deaths/sum(daily_deaths)),
+    by = .(result_state, date)]
+
+## Some labeling sugar 
+uscs$result_state = factor(paste('States that', uscs$result_state))
+uscs$result_county = factor(paste('Counties that', uscs$result_county))
+
+## Cases
+ggplot(uscs[date>'2020-03-01'], aes(date, daily_cases_perc, col = result_county)) +
+  geom_line() +
+  scale_color_brewer(palette = 'Set1', direction = -1) +
+  scale_y_percent(limits = c(0,1)) +
+  labs(title = 'Where new cases have been reported each day',
+       subtitle = 'County by state results',
+       caption = 'Data: NY Times\nCode: https://github.com/grantmcdermott/covote') +
+  facet_wrap(~ result_state)
+```
+
+![](README_files/figure-gfm/county_state-1.png)<!-- -->
+
+``` r
+
+## Deaths
+ggplot(uscs[date>'2020-03-01'], aes(date, daily_deaths_perc, col = result_county)) +
+  geom_line() +
+  scale_color_brewer(palette = 'Set1', direction = -1) +
+  scale_y_percent(limits = c(0,1)) +
+  labs(title = 'Where new deaths have been reported each day',
+       subtitle = 'County by state results',
+       caption = 'Data: NY Times\nCode: https://github.com/grantmcdermott/covote') +
+  facet_wrap(~ result_state)
+```
+
+![](README_files/figure-gfm/county_state-2.png)<!-- -->
 
 ## Acknowledgements
 
