@@ -15,7 +15,7 @@ time, aggregated by 2016 election results (i.e. whether a county or
 state voted for Donald Trump or Hillary Clinton).
 
 The short script below provides R code for reproducing this figure with
-up-to-date data. The script was run on **2020-07-13**, but it will
+up-to-date data. The script was run on **2020-08-04**, but it will
 automatically pull in the most recent data whenever you run it.
 
 ``` r
