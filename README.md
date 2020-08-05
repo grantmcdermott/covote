@@ -110,7 +110,7 @@ ggplot(us[date>'2020-03-01'], aes(date, daily_deaths_perc, col = result)) +
 ### Bonus: County by state results
 
 Here’s a variation that wasn’t in the original WaPo article, but might
-be of interested.
+be of interest.
 
 ``` r
 ## New county by state data table
