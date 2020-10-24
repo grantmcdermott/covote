@@ -23,7 +23,7 @@ The *Washington Post* published an article on June 17, 2020, titled ["Coronaviru
 
 The short script below provides R code for reproducing this figure with up-to-date data. The script was run on **`r Sys.Date()`**, but it will automatically pull in the most recent data whenever you run it.
 
-```{r covote, warning=FALSE}
+```{r covote, warning=FALSE, message=FALSE}
 library(data.table)
 library(ggplot2)
 library(hrbrthemes)
@@ -108,7 +108,7 @@ ggplot(us[date>'2020-03-01'], aes(date, daily_deaths_perc, col = result)) +
 
 ### Bonus: County by state results
 
-Here's a variation that wasn't in the original WaPo article, but might be of interest.
+Here's a variation that wasn't in the original WaPo article, but might be of interest. Among other things, looking at county-by-state results gives us some insight into whether it is better to be a Democratic in a red state, or a Republican in a blue state.
 
 ```{r county_state, warning=FALSE}
 ## New county by state data table
